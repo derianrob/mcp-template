@@ -1,0 +1,31 @@
+{
+  "name": "github-mcp",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "bin": {
+    "github-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pkgroll"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "semver": "^7.7.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.17",
+    "@types/semver": "^7.5.8",
+    "pkgroll": "^2.11.2",
+    "tsx": "^4.19.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

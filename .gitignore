@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+dist-docs
+*.local
+pnpm-lock.yaml
+package-lock.json
+*.log
+*.tgz
