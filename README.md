@@ -1,10 +1,10 @@
-# GitHub MCP
+# MCP Template
 
-Este proyecto es una herramienta que utiliza el Model Context Protocol (MCP) para interactuar con GitHub. Implementa un servidor MCP que proporciona herramientas para acceder y manipular datos de GitHub.
+Este proyecto es una plantilla (template) para crear herramientas que implementen el Model Context Protocol (MCP). Proporciona una estructura base y herramientas de ejemplo para facilitar el desarrollo de nuevos MCPs.
 
 ## Descripción
 
-GitHub MCP es una herramienta de línea de comandos que permite interactuar con GitHub utilizando el protocolo MCP (Model Context Protocol). El proyecto está diseñado para ser ejecutado como una herramienta CLI (Command Line Interface) que actúa como un servidor MCP, proporcionando herramientas específicas para GitHub.
+MCP Template es un proyecto base que implementa un servidor MCP, proporcionando una estructura organizada y herramientas de ejemplo que pueden ser utilizadas como punto de partida para desarrollar nuevos MCPs. El proyecto está diseñado para ser ejecutado como una herramienta CLI (Command Line Interface) que actúa como un servidor MCP.
 
 ## Arquitectura
 
@@ -21,16 +21,16 @@ src/
 ### Componentes Principales
 
 1. **Servidor MCP**: Implementado en `index.ts`, maneja la conexión y el registro de herramientas.
-2. **Herramientas**: Implementadas en el directorio `tools/`, cada una proporciona una funcionalidad específica.
+2. **Herramientas**: Implementadas en el directorio `tools/`, cada una proporciona una funcionalidad específica que puede ser utilizada como ejemplo.
 3. **Utilidades**: Funciones auxiliares y helpers en el directorio `utils/`.
 4. **Tipos**: Definiciones de tipos TypeScript para asegurar la seguridad de tipos.
 
-## Herramientas Disponibles
+## Herramientas de Ejemplo
 
 ### getUserDetails
 
 - **Nombre**: get-user-details
-- **Descripción**: Obtiene información detallada de un usuario
+- **Descripción**: Ejemplo de una herramienta que obtiene información detallada de un usuario
 - **Parámetros**:
   - `userId`: ID del usuario a consultar
 - **Retorna**: Información detallada del usuario en formato JSON
@@ -115,13 +115,14 @@ El servidor MCP se ejecutará en modo stdio, permitiendo la comunicación a trav
 
 ## Desarrollo
 
-Para contribuir al proyecto:
+Para crear un nuevo MCP basado en este template:
 
-1. Clonar el repositorio
-2. Instalar dependencias: `npm install`
-3. Realizar cambios en el código fuente
-4. Construir el proyecto: `npm run build`
-5. Probar los cambios
+1. Clonar este repositorio
+2. Modificar el `package.json` con el nombre y descripción de tu nuevo MCP
+3. Implementar tus propias herramientas en el directorio `tools/`
+4. Modificar el archivo `index.ts` para registrar tus nuevas herramientas
+5. Construir el proyecto: `npm run build`
+6. Probar los cambios
 
 ## Licencia
 
