@@ -5,12 +5,14 @@ const parameters = {
   userId: z.string().describe("User ID"),
 } as const;
 
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
 class UserDetailsTool extends BaseTool<typeof parameters> {
   protected readonly name = "get-user-details";
   protected readonly description = "Gets detailed user information";
   protected readonly parameters = parameters;
 
-  protected readonly handler = (params: { userId: string }) => {
+  protected readonly handler = (params: Parameters) => {
     try {
       const exampleUserDetails = {
         id: params.userId,
