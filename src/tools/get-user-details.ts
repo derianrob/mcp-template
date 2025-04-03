@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BaseTool } from "../types/tool";
+import { BaseTool } from "../base/base-tool";
 
 const parameters = {
   userId: z.string().describe("User ID"),
