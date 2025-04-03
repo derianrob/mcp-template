@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BaseTool } from "../core/base-tool";
+import type { McpTool } from "../interfaces/tool.interface";
 
 const parameters = {
   userId: z.string().describe("User ID"),
@@ -7,12 +7,11 @@ const parameters = {
 
 type Parameters = z.infer<z.ZodObject<typeof parameters>>;
 
-class UserDetailsTool extends BaseTool<typeof parameters> {
-  protected readonly name = "get-user-details";
-  protected readonly description = "Gets detailed user information";
-  protected readonly parameters = parameters;
-
-  protected readonly handler = (params: Parameters) => {
+class UserDetailsTool implements McpTool<typeof parameters> {
+  name = "get-user-details";
+  description = "Gets detailed user information";
+  parameters = parameters;
+  handler = (params: Parameters) => {
     try {
       const exampleUserDetails = {
         id: params.userId,
@@ -45,4 +44,4 @@ class UserDetailsTool extends BaseTool<typeof parameters> {
   };
 }
 
-export const getUserDetails = new UserDetailsTool().getTool();
+export const getUserDetails = new UserDetailsTool();
