@@ -1,45 +1,21 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 
 class Api {
-  private client: AxiosInstance;
+  protected client: AxiosInstance;
 
   constructor() {
+    const tokenAlegra = btoa(
+      `${process.env.VUE_APP_ALEGRA_EMAIL}:${process.env.VUE_APP_ALEGRA_TOKEN}`
+    );
+
     this.client = axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Basic ${tokenAlegra}`,
       },
     });
-  }
-
-  // Method to get the axios instance
-  getClient(): AxiosInstance {
-    return this.client;
-  }
-
-  // Generic GET method
-  async get<T>(url: string) {
-    const response = await this.client.get<T>(url);
-    return response.data;
-  }
-
-  // Generic POST method
-  async post<T>(url: string, data: any) {
-    const response = await this.client.post<T>(url, data);
-    return response.data;
-  }
-
-  // Generic PUT method
-  async put<T>(url: string, data: any) {
-    const response = await this.client.put<T>(url, data);
-    return response.data;
-  }
-
-  // Generic DELETE method
-  async delete<T>(url: string) {
-    const response = await this.client.delete<T>(url);
-    return response.data;
   }
 }
 
