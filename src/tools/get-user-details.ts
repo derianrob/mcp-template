@@ -10,9 +10,10 @@ class UserDetailsTool extends BaseTool<typeof userDetailsParameters> {
   protected readonly description = "Gets detailed user information";
   protected readonly parameters = userDetailsParameters;
 
-  protected readonly handler = ({ userId }: { userId: string }) => {
+  protected readonly handler = (params: { userId: string }) => {
     try {
       const exampleUserDetails = {
+        id: params.userId,
         name: "John Doe",
         email: "john.doe@example.com",
         role: "admin",
