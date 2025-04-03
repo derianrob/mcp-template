@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { BaseTool } from "../types/tool";
 
-const userDetailsParameters = {
+const parameters = {
   userId: z.string().describe("User ID"),
 } as const;
 
-class UserDetailsTool extends BaseTool<typeof userDetailsParameters> {
+class UserDetailsTool extends BaseTool<typeof parameters> {
   protected readonly name = "get-user-details";
   protected readonly description = "Gets detailed user information";
-  protected readonly parameters = userDetailsParameters;
+  protected readonly parameters = parameters;
 
   protected readonly handler = (params: { userId: string }) => {
     try {
