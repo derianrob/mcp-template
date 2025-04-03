@@ -49,8 +49,8 @@ Ejemplo de implementación:
 
 ```typescript
 class UserDetailsTool implements McpTool<typeof parameters> {
-  name = "get-user-details";
-  description = "Gets detailed user information";
+  name = 'get-user-details';
+  description = 'Gets detailed user information';
   parameters = parameters;
   handler = (params: Parameters) => {
     // Implementación del handler
@@ -97,6 +97,28 @@ Ejecutor de TypeScript que permite:
 
 - Ejecutar archivos TypeScript directamente
 - Desarrollo más rápido sin necesidad de compilación previa
+
+### ESLint y Prettier
+
+El proyecto utiliza ESLint y Prettier para mantener un código limpio y consistente:
+
+- **ESLint**: Para la detección de problemas y el cumplimiento de reglas de código
+- **Prettier**: Para el formateo automático del código
+
+Scripts disponibles:
+
+```bash
+# Linting
+npm run lint        # Verificar problemas de código
+npm run lint:fix    # Corregir problemas de código automáticamente
+
+# Formateo
+npm run format      # Formatear todo el código
+npm run format:check # Verificar el formateo sin hacer cambios
+
+# Verificación completa
+npm run check       # Ejecutar linting y verificación de formateo
+```
 
 ## Requisitos del Sistema
 
@@ -151,9 +173,15 @@ Para crear un nuevo MCP basado en este template:
    - Usar interfaces para definir contratos
 
 3. **Tipado**:
+
    - Aprovechar el sistema de tipos de TypeScript
    - Usar Zod para validación y generación de tipos
    - Mantener las interfaces en el directorio `interfaces/`
+
+4. **Calidad de Código**:
+   - Ejecutar `npm run check` antes de hacer commit
+   - Mantener el código formateado con Prettier
+   - Seguir las reglas de ESLint para mantener la consistencia
 
 ## Licencia
 

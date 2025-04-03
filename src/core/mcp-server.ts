@@ -1,8 +1,8 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerTool } from "../utils/register-tool";
-import packageJson from "../../package.json";
-import { getUserDetails } from "../tools/get-user-details";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { registerTool } from '../utils/register-tool';
+import packageJson from '../../package.json';
+import { getUserDetails } from '../tools/get-user-details';
 
 export class McpTemplateServer {
   private server: McpServer;

@@ -13,6 +13,11 @@
   ],
   "scripts": {
     "build": "pkgroll",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "check": "npm run lint && npm run format:check",
     "serve": "tsx watch src/index.ts",
     "dev": "npx @modelcontextprotocol/inspector tsx src/index.ts",
     "start": "node dist/index.js",
@@ -26,7 +31,13 @@
   "devDependencies": {
     "@types/node": "^22.13.17",
     "@types/semver": "^7.5.8",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "pkgroll": "^2.11.2",
+    "prettier": "^3.2.5",
     "tsx": "^4.19.3"
   },
   "peerDependencies": {
