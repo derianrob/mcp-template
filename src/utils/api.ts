@@ -6,7 +6,7 @@ class Api {
 
   constructor() {
     const tokenAlegra = btoa(
-      `${process.env.VUE_APP_ALEGRA_EMAIL}:${process.env.VUE_APP_ALEGRA_TOKEN}`
+      `${process.env.NEXT_PUBLIC_ALEGRA_EMAIL}:${process.env.NEXT_PUBLIC_ALEGRA_TOKEN}`
     );
 
     this.client = axios.create({
@@ -19,5 +19,4 @@ class Api {
   }
 }
 
-// Export a singleton instance
-export const api = new Api();
+export default Api;
