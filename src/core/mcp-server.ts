@@ -15,8 +15,6 @@ export class McpTemplateServer {
       name: packageJson.name,
       version: packageJson.version,
     });
-
-    // Inicializamos el transporte
     this.transport = new StdioServerTransport();
 
     // Inicializamos la lista de herramientas
@@ -27,7 +25,6 @@ export class McpTemplateServer {
   }
 
   private registerTools(): void {
-    // Registramos cada herramienta en el servidor
     this.tools.forEach((tool) => {
       registerTool(this.server, tool);
     });
@@ -35,18 +32,9 @@ export class McpTemplateServer {
 
   public async start(): Promise<void> {
     try {
-      // Conectamos el servidor al transporte
       await this.server.connect(this.transport);
-      console.error("MCP Server running on stdio");
     } catch (error) {
-      console.error("Error starting server:", error);
       throw error;
     }
-  }
-
-  // Método para agregar nuevas herramientas
-  public addTool(tool: any): void {
-    this.tools.push(tool);
-    registerTool(this.server, tool);
   }
 }
