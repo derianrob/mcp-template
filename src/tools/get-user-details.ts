@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { McpTool } from '../interfaces/tool.interface';
+import { response, errorResponse } from '../utils/response';
 
 const parameters = {
   userId: z.string().describe('User ID'),
@@ -21,25 +22,9 @@ class UserDetailsTool implements McpTool<typeof parameters> {
         status: 'active',
       };
 
-      return {
-        content: [
-          {
-            type: 'text' as const,
-            text: JSON.stringify(exampleUserDetails, null, 2),
-          },
-        ],
-      };
+      return response(exampleUserDetails);
     } catch (error) {
-      return {
-        content: [
-          {
-            type: 'text' as const,
-            text: `Error retrieving user details: ${
-              error instanceof Error ? error.message : 'Unknown error'
-            }`,
-          },
-        ],
-      };
+      return errorResponse(error);
     }
   };
 }
