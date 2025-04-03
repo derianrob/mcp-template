@@ -1,4 +1,4 @@
-import { McpTemplateServer } from './core/mcp-server';
+import { McpTemplateServer } from './server';
 
 // Función principal para iniciar el servidor
 async function main() {
