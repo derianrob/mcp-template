@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { McpTool } from "../types/tool";
 import { BaseTool } from "../types/tool";
 
 const userDetailsParameters = {
