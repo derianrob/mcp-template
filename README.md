@@ -12,18 +12,19 @@ El proyecto está estructurado de la siguiente manera:
 
 ```
 src/
-├── index.ts           # Punto de entrada principal
-├── tools/            # Herramientas MCP implementadas
-├── utils/            # Utilidades y helpers
-└── types/            # Definiciones de tipos TypeScript
+├── core/           # Clases base y abstracciones
+├── server/         # Lógica del servidor MCP
+├── tools/          # Herramientas MCP implementadas
+├── utils/          # Utilidades y helpers
+└── interfaces/     # Definiciones de interfaces y tipos
 ```
 
 ### Componentes Principales
 
-1. **Servidor MCP**: Implementado en `index.ts`, maneja la conexión y el registro de herramientas.
+1. **Servidor MCP**: Implementado en `src/server/mcp-workshop-server.ts`, maneja la conexión y el registro de herramientas.
 2. **Herramientas**: Implementadas en el directorio `tools/`, cada una proporciona una funcionalidad específica que puede ser utilizada como ejemplo.
 3. **Utilidades**: Funciones auxiliares y helpers en el directorio `utils/`.
-4. **Tipos**: Definiciones de tipos TypeScript para asegurar la seguridad de tipos.
+4. **Interfaces**: Definiciones de interfaces TypeScript para asegurar la seguridad de tipos.
 
 ## Herramientas de Ejemplo
 
@@ -35,6 +36,28 @@ src/
   - `userId`: ID del usuario a consultar
 - **Retorna**: Información detallada del usuario en formato JSON
 
+### Implementación de Herramientas
+
+Las herramientas se implementan siguiendo el patrón de implementación de interfaces en lugar de herencia. Esto proporciona:
+
+- Menor acoplamiento
+- Mayor flexibilidad
+- Mejor testabilidad
+- Código más limpio y mantenible
+
+Ejemplo de implementación:
+
+```typescript
+class UserDetailsTool implements McpTool<typeof parameters> {
+  name = "get-user-details";
+  description = "Gets detailed user information";
+  parameters = parameters;
+  handler = (params: Parameters) => {
+    // Implementación del handler
+  };
+}
+```
+
 ## Dependencias Principales
 
 ### @modelcontextprotocol/sdk (v1.7.0)
@@ -45,14 +68,6 @@ El SDK del Model Context Protocol es una biblioteca que proporciona una interfaz
 - Gestionar las interacciones con los modelos
 - Proporcionar una capa de abstracción para el protocolo MCP
 
-### semver (v7.7.1)
-
-Semver es una biblioteca para el manejo de versiones semánticas. En este proyecto se utiliza para:
-
-- Comparar versiones de software
-- Validar números de versión
-- Manejar rangos de versiones compatibles
-
 ### zod (v3.24.2)
 
 Zod es una biblioteca de validación de esquemas TypeScript que permite:
@@ -60,16 +75,13 @@ Zod es una biblioteca de validación de esquemas TypeScript que permite:
 - Definir y validar estructuras de datos
 - Crear tipos en tiempo de ejecución
 - Asegurar la integridad de los datos
+- Inferir tipos automáticamente de los esquemas
 
 ## Dependencias de Desarrollo
 
 ### @types/node (v22.13.17)
 
 Tipos de TypeScript para Node.js, proporcionando definiciones de tipos para las APIs de Node.
-
-### @types/semver (v7.5.8)
-
-Tipos de TypeScript para la biblioteca semver.
 
 ### pkgroll (v2.11.2)
 
@@ -119,10 +131,29 @@ Para crear un nuevo MCP basado en este template:
 
 1. Clonar este repositorio
 2. Modificar el `package.json` con el nombre y descripción de tu nuevo MCP
-3. Implementar tus propias herramientas en el directorio `tools/`
+3. Implementar tus propias herramientas en el directorio `tools/` siguiendo el patrón de implementación de interfaces
 4. Modificar el archivo `index.ts` para registrar tus nuevas herramientas
 5. Construir el proyecto: `npm run build`
 6. Probar los cambios
+
+## Mejores Prácticas
+
+1. **Implementación de Herramientas**:
+
+   - Usar `implements` en lugar de herencia para las herramientas
+   - Definir tipos claros para los parámetros usando Zod
+   - Mantener las herramientas pequeñas y enfocadas
+
+2. **Estructura del Proyecto**:
+
+   - Mantener una estructura clara y organizada
+   - Separar la lógica del servidor de las herramientas
+   - Usar interfaces para definir contratos
+
+3. **Tipado**:
+   - Aprovechar el sistema de tipos de TypeScript
+   - Usar Zod para validación y generación de tipos
+   - Mantener las interfaces en el directorio `interfaces/`
 
 ## Licencia
 
