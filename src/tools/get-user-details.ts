@@ -1,15 +1,17 @@
 import { z } from "zod";
 import type { McpTool } from "../types/tool";
+import { BaseTool } from "../types/tool";
 
-const parameters = {
+const userDetailsParameters = {
   userId: z.string().describe("User ID"),
-};
+} as const;
 
-export const getUserDetails: McpTool<typeof parameters> = {
-  name: "get-user-details",
-  description: "Gets detailed user information",
-  parameters,
-  handler: ({ userId }) => {
+class UserDetailsTool extends BaseTool<typeof userDetailsParameters> {
+  protected readonly name = "get-user-details";
+  protected readonly description = "Gets detailed user information";
+  protected readonly parameters = userDetailsParameters;
+
+  protected readonly handler = ({ userId }: { userId: string }) => {
     try {
       const exampleUserDetails = {
         name: "John Doe",
@@ -21,7 +23,7 @@ export const getUserDetails: McpTool<typeof parameters> = {
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: JSON.stringify(exampleUserDetails, null, 2),
           },
         ],
@@ -30,7 +32,7 @@ export const getUserDetails: McpTool<typeof parameters> = {
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: `Error retrieving user details: ${
               error instanceof Error ? error.message : "Unknown error"
             }`,
@@ -38,5 +40,7 @@ export const getUserDetails: McpTool<typeof parameters> = {
         ],
       };
     }
-  },
-};
+  };
+}
+
+export const getUserDetails = new UserDetailsTool().getTool();
