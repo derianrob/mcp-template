@@ -6,18 +6,14 @@ import type { McpTool } from '../interfaces/tool.interface';
 import type { ContactAddress } from '../interfaces/contact.interface';
 
 const addressSchema = z.object({
-  colony: z.string(),
-  municipality: z.string(),
   zipCode: z.string(),
-  state: z.string(),
-  country: z.string(),
 }) satisfies z.ZodType<ContactAddress>;
 
 const parameters = {
   name: z.string().describe('Contact name'),
   email: z.string().describe('Contact email'),
-  identification: z.string().describe('Contact identification'),
-  address: addressSchema.optional().describe('Contact address'),
+  identification: z.string().optional().describe('Contact identification'),
+  address: addressSchema.describe('Contact address'),
 };
 
 type Parameters = z.infer<z.ZodObject<typeof parameters>>;
