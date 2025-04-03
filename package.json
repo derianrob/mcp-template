@@ -12,7 +12,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "pkgroll"
+    "build": "pkgroll",
+    "serve": "tsx watch src/index.ts",
+    "dev": "npx @modelcontextprotocol/inspector tsx src/index.ts",
+    "start": "node dist/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
