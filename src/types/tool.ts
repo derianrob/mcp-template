@@ -1,13 +1,6 @@
 import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-
-export interface McpTool<Args extends z.ZodRawShape> {
-  name: string;
-  description: string;
-  parameters: Args;
-  handler: ToolCallback<Args>;
-}
-
+import type { McpTool } from "../interfaces/tool.interface";
 export abstract class BaseTool<Args extends z.ZodRawShape> {
   protected abstract readonly name: string;
   protected abstract readonly description: string;
