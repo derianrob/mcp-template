@@ -3,26 +3,24 @@ import type { McpTool } from '../interfaces/tool.interface';
 import { response, errorResponse } from '../utils/response';
 import { ContactsService } from '../services/contactService';
 
-const parameters = {
-  id: z.string().describe('Contact ID'),
-} as const;
+const parameters = {} as const;
 
 type Parameters = z.infer<z.ZodObject<typeof parameters>>;
 
-class ContactDetailTool implements McpTool<typeof parameters> {
-  name = 'get-contact-detail';
-  description = 'Gets detailed contact information';
+class GetContactsTool implements McpTool<typeof parameters> {
+  name = 'get-contacts';
+  description = 'Gets all contacts';
   parameters = parameters;
-  handler = async ({ id }: Parameters) => {
+  handler = async (params: Parameters) => {
     try {
       const contactService = new ContactsService();
-      const contact = await contactService.getContact(id);
+      const contacts = await contactService.getContacts();
 
-      return response(contact);
+      return response(contacts);
     } catch (error) {
       return errorResponse(error);
     }
   };
 }
 
-export const getContactDetail = new ContactDetailTool();
+export const getContacts = new GetContactsTool();

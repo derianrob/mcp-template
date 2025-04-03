@@ -22,7 +22,12 @@ export class ContactsService extends API {
 
   async createContact(contact: Contact) {
     try {
-      const response = await this.client.post('/api/v1/contacts', contact);
+      const response = await this.client.post('/api/v1/contacts', {
+        ...contact,
+        thirdType: 'NATIONAL',
+        regime: 'NO_REGIME',
+        type: 'client',
+      });
       return response.data;
     } catch (error) {
       throw error;

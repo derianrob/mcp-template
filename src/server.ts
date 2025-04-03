@@ -2,7 +2,12 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { registerTool } from './utils/register-tool';
 import packageJson from '../package.json';
+
+// Tools
 import { getUserDetails } from './tools/get-user-details';
+import { getContactDetail } from './tools/get-contact-detail';
+import { getContacts } from './tools/get-contacts';
+import { createContact } from './tools/create-contact';
 
 export class McpTemplateServer {
   private server: McpServer;
@@ -18,7 +23,7 @@ export class McpTemplateServer {
     this.transport = new StdioServerTransport();
 
     // Inicializamos la lista de herramientas
-    this.tools = [getUserDetails];
+    this.tools = [getUserDetails, getContactDetail, getContacts, createContact];
 
     // Registramos las herramientas
     this.registerTools();
