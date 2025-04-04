@@ -33,26 +33,17 @@ src/
 
 ## 1. Configuración Base 🚀
 
-### 1.1 Crear Utilidad API Base
+1. Clona este repositorio:
 
-Crea el archivo `src/utils/api.ts`:
+```bash
+git clone https://github.com/derianrob/mcp-template name-mcp
+cd name-mcp
+```
 
-```typescript
-import axios, { AxiosInstance } from 'axios';
+2. Instala las dependencias:
 
-export default class API {
-  protected client: AxiosInstance;
-
-  constructor() {
-    this.client = axios.create({
-      baseURL: process.env.API_URL,
-      auth: {
-        username: process.env.USER || '',
-        password: process.env.PASSWORD || '',
-      },
-    });
-  }
-}
+```bash
+npm install
 ```
 
 ## 2. Implementación de Interfaces 📝
