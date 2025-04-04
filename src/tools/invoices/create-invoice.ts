@@ -6,6 +6,15 @@ import type { McpTool } from '../../interfaces/tool.interface';
 import type { IContact, IContactAddress } from '../../interfaces/contact.interface';
 import type { IItem } from '../../interfaces/item.interface';
 
+// Validador de formato de fecha yyyy-MM-dd
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+const dateSchema = z
+  .string()
+  .refine((date) => dateRegex.test(date), {
+    message: 'Date must be in format yyyy-MM-dd',
+  })
+  .transform((date) => new Date(date));
+
 const addressSchema = z.object({
   zipCode: z.string().describe('Client address zip code'),
 }) satisfies z.ZodType<IContactAddress>;
@@ -26,8 +35,8 @@ const itemSchema = z.object({
 }) satisfies z.ZodType<IItem>;
 
 const parameters = {
-  date: z.string().describe('Invoice date'),
-  dueDate: z.string().describe('Invoice due date'),
+  date: dateSchema.describe('Invoice date (format: yyyy-MM-dd)'),
+  dueDate: dateSchema.describe('Invoice due date (format: yyyy-MM-dd)'),
   client: clientSchema.describe('Client'),
   items: z.array(itemSchema).describe('Array of items for the invoice'),
 };
