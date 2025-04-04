@@ -1,6 +1,3 @@
-// import * as dotenv from 'dotenv';
-// dotenv.config();
-
 import { McpTemplateServer } from './server';
 
 // Función principal para iniciar el servidor
