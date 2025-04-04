@@ -97,8 +97,8 @@ import type { IContact } from './contact.interface';
 import type { IItem } from './item.interface';
 
 export interface IInvoiceBase {
-  date: Date;
-  dueDate: Date;
+  date: string;
+  dueDate: string;
   client: IContact;
   items: IItem[];
   paymentMethod: 'cash' | 'credit-card' | 'debit-card';
@@ -458,15 +458,6 @@ import type { McpTool } from '../../interfaces/tool.interface';
 import type { IContact, IContactAddress } from '../../interfaces/contact.interface';
 import type { IItemPayload } from '../../interfaces/item.interface';
 
-// Validador de formato de fecha yyyy-MM-dd
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-const dateSchema = z
-  .string()
-  .refine((date) => dateRegex.test(date), {
-    message: 'Date must be in format yyyy-MM-dd',
-  })
-  .transform((date) => new Date(date));
-
 const addressSchema = z.object({
   zipCode: z.string().describe('Client address zip code'),
 }) satisfies z.ZodType<IContactAddress>;
@@ -487,8 +478,8 @@ const itemSchema = z.object({
 }) satisfies z.ZodType<IItemPayload>;
 
 const parameters = {
-  date: dateSchema.describe('Invoice date (format: yyyy-MM-dd)'),
-  dueDate: dateSchema.describe('Invoice due date (format: yyyy-MM-dd)'),
+  date: z.string().describe('Invoice date (format: yyyy-MM-dd)'),
+  dueDate: z.string().describe('Invoice due date (format: yyyy-MM-dd)'),
   paymentMethod: z.enum(['cash', 'credit-card', 'debit-card']).describe('Payment method'),
   client: clientSchema.describe('Client'),
   items: z.array(itemSchema).describe('Array of items for the invoice'),
