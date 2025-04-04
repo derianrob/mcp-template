@@ -16,11 +16,13 @@ export const response = (data: unknown): McpResponse => ({
   ],
 });
 
-export const errorResponse = (error: unknown): McpResponse => ({
-  content: [
-    {
-      type: 'text',
-      text: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    },
-  ],
-});
+export const errorResponse = (error: unknown | Error): McpResponse => {
+  return {
+    content: [
+      {
+        type: 'text',
+        text: JSON.stringify(error, null, 2),
+      },
+    ],
+  };
+};
