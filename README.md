@@ -1,46 +1,43 @@
-# MCP Template 🛠️
+# Guía de Implementación de Servicios MCP 🛠️
 
-Este repositorio contiene un template base para crear herramientas que implementen el Model Context Protocol (MCP). Proporciona la estructura y configuración necesaria para comenzar a desarrollar tus propios MCPs de manera rápida y siguiendo las mejores prácticas.
+Esta guía te ayudará a implementar los servicios de Contacts, Items e Invoices sobre el template base de MCP.
 
-> **Nota**: Este es un template base. Para ver un ejemplo completo de implementación de un MCP, por favor revisa la rama `example`.
-
-## 🎯 Propósito
-
-El propósito de este template es proporcionar:
-
-- Una estructura base consistente para desarrollar MCPs
-- Configuración inicial de TypeScript y herramientas de desarrollo
-- Implementación básica del servidor MCP
-- Sistema de registro de herramientas
-
-## 🏗️ Estructura del Template
+## Estructura de Archivos 📁
 
 ```
-├── src/
-│   ├── interfaces/     # Definiciones de tipos e interfaces
-│   ├── tools/          # Implementaciones de herramientas MCP
-│   ├── utils/          # Utilidades y funciones helper
-│   ├── index.ts        # Punto de entrada de la aplicación
-│   └── server.ts       # Implementación del servidor MCP
-├── package.json        # Configuración del proyecto y dependencias
-├── tsconfig.json       # Configuración de TypeScript
-└── README.md          # Esta documentación
+src/
+├── interfaces/
+│   ├── contact.interface.ts
+│   ├── item.interface.ts
+│   └── invoice.interface.ts
+├── services/
+│   ├── contactService.ts
+│   ├── itemsService.ts
+│   └── invoiceService.ts
+├── tools/
+│   ├── contacts/
+│   │   ├── create-contact.ts
+│   │   ├── get-contact-detail.ts
+│   │   └── get-contacts.ts
+│   ├── items/
+│   │   ├── create-item.ts
+│   │   ├── get-item-detail.ts
+│   │   └── get-items.ts
+│   └── invoices/
+│       ├── create-invoice.ts
+│       ├── get-invoice-detail.ts
+│       └── get-invoices.ts
+└── utils/
+    └── api.ts
 ```
 
-## 🚀 Comenzando
-
-### Prerrequisitos
-
-- Node.js (versión recomendada: 18 o superior)
-- npm o yarn
-
-### Instalación
+## 1. Configuración Base 🚀
 
 1. Clona este repositorio:
 
 ```bash
-git clone https://github.com/tu-usuario/mcp-template.git tu-mcp
-cd tu-mcp
+git clone https://github.com/derianrob/mcp-template name-mcp
+cd name-mcp
 ```
 
 2. Instala las dependencias:
@@ -49,144 +46,605 @@ cd tu-mcp
 npm install
 ```
 
-## 📦 Scripts Disponibles
+## 2. Implementación de Interfaces 📝
 
-```bash
-# Desarrollo
-npm run dev          # Ejecuta el MCP con el inspector y variables de prueba
-npm run serve        # Ejecuta el servidor en modo desarrollo con hot-reload
+### 2.1 Interfaz de Contactos
 
-# Construcción
-npm run build        # Construye el proyecto
-
-# Calidad de código
-npm run lint         # Verifica el código con ESLint
-npm run lint:fix     # Corrige problemas de código automáticamente
-npm run format       # Formatea el código con Prettier
-npm run check        # Ejecuta todas las verificaciones
-```
-
-## 🛠️ Desarrollo de tu MCP
-
-### 1. Configuración Inicial
-
-1. Modifica el `package.json` con el nombre y descripción de tu MCP
-2. Actualiza este README con la documentación específica de tu MCP
-3. Configura las variables de entorno necesarias
-
-### 2. Implementación de Herramientas
-
-Las herramientas deben implementar la interfaz `McpTool`:
+Crea el archivo `src/interfaces/contact.interface.ts`:
 
 ```typescript
-interface McpTool<T> {
+export interface IContactAddress {
+  zipCode: string;
+}
+
+export interface IContactBase {
   name: string;
-  description: string;
-  parameters: T;
-  handler: (params: T) => Promise<any>;
+  email: string;
+  address: IContactAddress;
+}
+
+export interface IContact extends IContactBase {
+  id: string;
 }
 ```
 
-### 3. Registro de Herramientas
+### 2.2 Interfaz de Items
 
-Registra tus herramientas en `src/server.ts`:
+Crea el archivo `src/interfaces/item.interface.ts`:
 
 ```typescript
-this.tools = [
-  tuNuevaHerramienta,
-  // ... más herramientas
-];
+export interface IItemBase {
+  name: string;
+  description: string;
+  price: number;
+}
+
+export interface IItem extends IItemBase {
+  id: string;
+}
+
+export interface IItemPayload extends IItem {
+  quantity: number;
+}
 ```
 
-## 📚 Dependencias Principales
+### 2.3 Interfaz de Invoices
 
-- `@modelcontextprotocol/sdk`: SDK del Model Context Protocol
-- `zod`: Validación de esquemas y tipos
-- `axios`: Cliente HTTP
-- `semver`: Manejo de versiones semánticas
+Crea el archivo `src/interfaces/invoice.interface.ts`:
 
-## 🔧 Configuración
+```typescript
+import type { IContact } from './contact.interface';
+import type { IItem } from './item.interface';
 
-### TypeScript
+export interface IInvoiceBase {
+  date: Date;
+  dueDate: Date;
+  client: IContact;
+  items: IItem[];
+  paymentMethod: 'cash' | 'credit-card' | 'debit-card';
+}
 
-La configuración base de TypeScript incluye:
+export interface IInvoice extends IInvoiceBase {
+  id: string;
+}
+```
 
-- Módulos ES2022
-- Strict mode habilitado
-- Generación de source maps
-- Declaración de tipos
+## 3. Implementación de Servicios 🔧
 
-### ESLint y Prettier
+### 3.1 Servicio de Contactos
 
-Configuración preestablecida para mantener un código limpio y consistente.
+Crea el archivo `src/services/contactService.ts`:
 
-## 🏗️ Estructura de una Herramienta MCP
+```typescript
+import API from '../utils/api';
+import type { IContactBase, IContact } from '../interfaces/contact.interface';
+
+export class ContactsService extends API {
+  async getContact(id: string): Promise<IContact> {
+    try {
+      const response = await this.client.get(`/v1/contacts/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getContacts(): Promise<IContact[]> {
+    try {
+      const response = await this.client.get('/v1/contacts');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createContact(contact: IContactBase): Promise<IContact> {
+    try {
+      const data = {
+        ...contact,
+        address: {
+          ...contact.address,
+          country: 'MEX',
+        },
+        thirdType: 'NATIONAL',
+        regime: 'NO_REGIME',
+        type: 'client',
+      };
+      const response = await this.client.post('/v1/contacts', data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+```
+
+### 3.2 Servicio de Items
+
+Crea el archivo `src/services/itemsService.ts`:
+
+```typescript
+import API from '../utils/api';
+import type { IItem, IItemBase } from '../interfaces/item.interface';
+
+export class ItemsService extends API {
+  async getItem(id: string): Promise<IItem> {
+    try {
+      const response = await this.client.get(`/v1/items/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getItems(): Promise<IItem[]> {
+    try {
+      const response = await this.client.get('/v1/items');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createItem(item: IItemBase): Promise<IItem> {
+    try {
+      const response = await this.client.post('/v1/items', item);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+```
+
+### 3.3 Servicio de Invoices
+
+Crea el archivo `src/services/invoiceService.ts`:
+
+```typescript
+import API from '../utils/api';
+import type { IInvoice, IInvoiceBase } from '../interfaces/invoice.interface';
+
+export class InvoicesService extends API {
+  async getInvoice(id: string): Promise<IInvoice> {
+    try {
+      const response = await this.client.get(`/v1/invoices/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getInvoices(): Promise<IInvoice[]> {
+    try {
+      const response = await this.client.get('/v1/invoices');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createInvoice(invoice: IInvoiceBase): Promise<IInvoice> {
+    try {
+      const response = await this.client.post('/v1/invoices', invoice);
+      return response.data;
+    } catch (error) {
+      process.stderr.write(`${JSON.stringify(error, null, 2)}\n`);
+      throw error;
+    }
+  }
+}
+```
+
+## 4. Implementación de Herramientas 🔨
+
+### 4.1 Herramientas de Contactos
+
+#### create-contact.ts
 
 ```typescript
 import { z } from 'zod';
-import { McpTool } from '../interfaces/mcp-tool';
+import { response, errorResponse } from '../../utils/response';
+import { ContactsService } from '../../services/contactService';
 
-const parameters = z.object({
-  // Define tus parámetros aquí
-});
+import type { McpTool } from '../../interfaces/tool.interface';
+import type { IContactAddress } from '../../interfaces/contact.interface';
 
-type Parameters = z.infer<typeof parameters>;
+const addressSchema = z.object({
+  zipCode: z.string().describe('Contact address zip code'),
+}) satisfies z.ZodType<IContactAddress>;
 
-export const tuHerramienta: McpTool<typeof parameters> = {
-  name: 'nombre-de-tu-herramienta',
-  description: 'Descripción de lo que hace tu herramienta',
-  parameters,
-  handler: async (params: Parameters) => {
-    // Implementa tu lógica aquí
-  },
+const parameters = {
+  name: z.string().describe('Contact name'),
+  email: z.string().describe('Contact email'),
+  identification: z.string().optional().describe('Contact identification'),
+  address: addressSchema.describe('Contact address'),
 };
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class CreateContactTool implements McpTool<typeof parameters> {
+  name = 'create-contact';
+  description = 'Creates a new contact';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const contactService = new ContactsService();
+      const contact = await contactService.createContact(params);
+
+      return response(contact);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const createContact = new CreateContactTool();
 ```
 
-## 🔍 Inspección y Pruebas
+#### get-contacts.ts
 
-Para probar tu MCP localmente:
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ContactsService } from '../../services/contactService';
 
-```bash
-npm run dev
+const parameters = {} as const;
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class GetContactsTool implements McpTool<typeof parameters> {
+  name = 'get-contacts';
+  description = 'Gets all contacts';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const contactService = new ContactsService();
+      const contacts = await contactService.getContacts();
+
+      return response(contacts);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const getContacts = new GetContactsTool();
 ```
 
-Esto iniciará el inspector MCP que te permitirá interactuar con tus herramientas.
+#### get-contact-detail.ts
 
-## 📝 Mejores Prácticas
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ContactsService } from '../../services/contactService';
 
-1. **Organización del Código**
+const parameters = {
+  id: z.string().describe('Contact ID'),
+} as const;
 
-   - Mantén una estructura clara y modular
-   - Usa tipos e interfaces para todo
-   - Documenta tus funciones y clases
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
 
-2. **Seguridad**
+class ContactDetailTool implements McpTool<typeof parameters> {
+  name = 'get-contact-detail';
+  description = 'Gets detailed contact information';
+  parameters = parameters;
+  handler = async ({ id }: Parameters) => {
+    try {
+      const contactService = new ContactsService();
+      const contact = await contactService.getContact(id);
 
-   - No expongas credenciales en el código
-   - Usa variables de entorno para configuración sensible
-   - Valida todos los inputs con Zod
+      return response(contact);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
 
-3. **Calidad**
-   - Ejecuta `npm run check` antes de commits
-   - Mantén la cobertura de tipos al 100%
-   - Sigue las convenciones de nombres establecidas
+export const getContactDetail = new ContactDetailTool();
+```
 
-## 🤝 Contribución
+### 4.2 Herramientas de Items
 
-Si encuentras mejoras posibles para este template, por favor:
+#### create-item.ts
 
-1. Haz fork del repositorio
-2. Crea una rama para tu feature
-3. Haz commit de tus cambios
-4. Abre un Pull Request
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ItemsService } from '../../services/itemsService';
 
-## 📄 Licencia
+const parameters = {
+  name: z.string().describe('Item name'),
+  description: z.string().describe('Item description'),
+  price: z.number().describe('Item price'),
+};
 
-[MIT](LICENSE)
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
 
----
+class CreateItemTool implements McpTool<typeof parameters> {
+  name = 'create-item';
+  description = 'Creates an item';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const itemService = new ItemsService();
+      const item = await itemService.createItem(params);
+      return response(item);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
 
-🔗 **Enlaces Útiles**
+export const createItem = new CreateItemTool();
+```
 
-- [Documentación del MCP SDK](https://github.com/modelcontextprotocol/)
-- [Guía de Desarrollo de MCPs](https://modelcontextprotocol.io/introduction)
+#### get-items.ts
+
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ItemsService } from '../../services/itemsService';
+
+const parameters = {} as const;
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class GetItemsTool implements McpTool<typeof parameters> {
+  name = 'get-items';
+  description = 'Gets all items';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const itemService = new ItemsService();
+      const items = await itemService.getItems();
+
+      return response(items);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const getItems = new GetItemsTool();
+```
+
+#### get-item-detail.ts
+
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ItemsService } from '../../services/itemsService';
+
+const parameters = {
+  id: z.string().describe('Item ID'),
+};
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class GetItemDetailTool implements McpTool<typeof parameters> {
+  name = 'get-item-detail';
+  description = 'Gets the detail of an item';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const itemService = new ItemsService();
+      const item = await itemService.getItem(params.id);
+      return response(item);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const getItemDetail = new GetItemDetailTool();
+```
+
+### 4.3 Herramientas de Invoices
+
+#### create-invoice.ts
+
+```typescript
+import { z } from 'zod';
+import { response, errorResponse } from '../../utils/response';
+import { InvoicesService } from '../../services/invoiceService';
+
+import type { McpTool } from '../../interfaces/tool.interface';
+import type { IContact, IContactAddress } from '../../interfaces/contact.interface';
+import type { IItemPayload } from '../../interfaces/item.interface';
+
+// Validador de formato de fecha yyyy-MM-dd
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+const dateSchema = z
+  .string()
+  .refine((date) => dateRegex.test(date), {
+    message: 'Date must be in format yyyy-MM-dd',
+  })
+  .transform((date) => new Date(date));
+
+const addressSchema = z.object({
+  zipCode: z.string().describe('Client address zip code'),
+}) satisfies z.ZodType<IContactAddress>;
+
+const clientSchema = z.object({
+  id: z.string().describe('Client ID'),
+  name: z.string().describe('Client name'),
+  email: z.string().describe('Client email'),
+  address: addressSchema.describe('Client address'),
+}) satisfies z.ZodType<IContact>;
+
+const itemSchema = z.object({
+  id: z.string().describe('Item ID'),
+  name: z.string().describe('Item name'),
+  price: z.number().describe('Item price'),
+  description: z.string().describe('Item description'),
+  quantity: z.number().describe('Item quantity'),
+}) satisfies z.ZodType<IItemPayload>;
+
+const parameters = {
+  date: dateSchema.describe('Invoice date (format: yyyy-MM-dd)'),
+  dueDate: dateSchema.describe('Invoice due date (format: yyyy-MM-dd)'),
+  paymentMethod: z.enum(['cash', 'credit-card', 'debit-card']).describe('Payment method'),
+  client: clientSchema.describe('Client'),
+  items: z.array(itemSchema).describe('Array of items for the invoice'),
+};
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class CreateInvoiceTool implements McpTool<typeof parameters> {
+  name = 'create-invoice';
+  description = 'Creates an invoice';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const invoiceService = new InvoicesService();
+      const invoice = await invoiceService.createInvoice(params);
+
+      return response(invoice);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const createInvoice = new CreateInvoiceTool();
+```
+
+#### get-invoices.ts
+
+```typescript
+import { z } from 'zod';
+import { response, errorResponse } from '../../utils/response';
+import { InvoicesService } from '../../services/invoiceService';
+
+import type { McpTool } from '../../interfaces/tool.interface';
+
+const parameters = {} as const;
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class GetInvoicesTool implements McpTool<typeof parameters> {
+  name = 'get-invoices';
+  description = 'Gets all invoices';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const invoiceService = new InvoicesService();
+      const invoices = await invoiceService.getInvoices();
+
+      return response(invoices);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const getInvoices = new GetInvoicesTool();
+```
+
+#### get-invoice-detail.ts
+
+```typescript
+import { z } from 'zod';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { InvoicesService } from '../../services/invoiceService';
+
+const parameters = {
+  id: z.string().describe('Invoice ID'),
+};
+
+type Parameters = z.infer<z.ZodObject<typeof parameters>>;
+
+class GetInvoiceDetailTool implements McpTool<typeof parameters> {
+  name = 'get-invoice-detail';
+  description = 'Gets the detail of an invoice';
+  parameters = parameters;
+  handler = async (params: Parameters) => {
+    try {
+      const invoiceService = new InvoicesService();
+      const invoice = await invoiceService.getInvoice(params.id);
+
+      return response(invoice);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+}
+
+export const getInvoiceDetail = new GetInvoiceDetailTool();
+```
+
+## 5. Actualizar el Servidor 🖥️
+
+Actualiza el archivo `src/server.ts`:
+
+```typescript
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { registerTool } from './utils/register-tool';
+import packageJson from '../package.json';
+
+// Tools
+import { getContactDetail } from './tools/contacts/get-contact-detail';
+import { getContacts } from './tools/contacts/get-contacts';
+import { createContact } from './tools/contacts/create-contact';
+
+import { getItemDetail } from './tools/items/get-item-detail';
+import { getItems } from './tools/items/get-items';
+import { createItem } from './tools/items/create-item';
+
+import { getInvoiceDetail } from './tools/invoices/get-invoice-detail';
+import { getInvoices } from './tools/invoices/get-invoices';
+import { createInvoice } from './tools/invoices/create-invoice';
+
+export class McpTemplateServer {
+  private server: McpServer;
+  private transport: StdioServerTransport;
+  private tools: any[];
+
+  constructor() {
+    // Inicializamos el servidor con el nombre y versión del package.json
+    this.server = new McpServer({
+      name: packageJson.name,
+      version: packageJson.version,
+    });
+    this.transport = new StdioServerTransport();
+
+    // Inicializamos la lista de herramientas
+    this.tools = [
+      getContactDetail,
+      getContacts,
+      createContact,
+      getItemDetail,
+      getItems,
+      createItem,
+      createInvoice,
+      getInvoiceDetail,
+      getInvoices,
+    ];
+
+    // Registramos las herramientas
+    this.registerTools();
+  }
+
+  private registerTools(): void {
+    this.tools.forEach((tool) => {
+      registerTool(this.server, tool);
+    });
+  }
+
+  public async start(): Promise<void> {
+    try {
+      await this.server.connect(this.transport);
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+```
