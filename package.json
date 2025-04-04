@@ -19,7 +19,7 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "check": "npm run lint && npm run format:check",
     "serve": "tsx watch src/index.ts",
-    "dev": "npx @modelcontextprotocol/inspector -e ALEGRA_EMAIL=derian.rosado+workshop@alegra.com -e ALEGRA_TOKEN=3716188532ad5c5f5568 -e API_URL=https://app.alegra.com/api tsx src/index.ts",
+    "dev": "npx @modelcontextprotocol/inspector -e USER=derian.rosado+workshop@alegra.com -e PASSWORD=3716188532ad5c5f5568 -e API_URL=https://app.alegra.com/api tsx src/index.ts",
     "start": "node dist/index.js",
     "inspect": "npx @modelcontextprotocol/inspector node dist/index.js"
   },
