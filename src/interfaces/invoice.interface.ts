@@ -1,7 +1,11 @@
+import type { IContact } from './contact.interface';
+import type { IItem } from './item.interface';
+
 export interface IInvoiceBase {
-  name: string;
-  description: string;
-  price: number;
+  date: Date;
+  dueDate: Date;
+  client: IContact;
+  items: IItem[];
 }
 
 export interface IInvoice extends IInvoiceBase {

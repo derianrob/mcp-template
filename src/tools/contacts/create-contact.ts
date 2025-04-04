@@ -6,7 +6,7 @@ import type { McpTool } from '../../interfaces/tool.interface';
 import type { IContactAddress } from '../../interfaces/contact.interface';
 
 const addressSchema = z.object({
-  zipCode: z.string(),
+  zipCode: z.string().describe('Contact address zip code'),
 }) satisfies z.ZodType<IContactAddress>;
 
 const parameters = {
