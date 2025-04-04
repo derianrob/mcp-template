@@ -4,17 +4,7 @@ import { registerTool } from './utils/register-tool';
 import packageJson from '../package.json';
 
 // Tools
-import { getContactDetail } from './tools/contacts/get-contact-detail';
-import { getContacts } from './tools/contacts/get-contacts';
-import { createContact } from './tools/contacts/create-contact';
-
-import { getItemDetail } from './tools/items/get-item-detail';
-import { getItems } from './tools/items/get-items';
-import { createItem } from './tools/items/create-item';
-
-import { getInvoiceDetail } from './tools/invoices/get-invoice-detail';
-import { getInvoices } from './tools/invoices/get-invoices';
-import { createInvoice } from './tools/invoices/create-invoice';
+import { getUserDetails } from './tools/get-user-details';
 
 export class McpTemplateServer {
   private server: McpServer;
@@ -30,17 +20,7 @@ export class McpTemplateServer {
     this.transport = new StdioServerTransport();
 
     // Inicializamos la lista de herramientas
-    this.tools = [
-      getContactDetail,
-      getContacts,
-      createContact,
-      getItemDetail,
-      getItems,
-      createItem,
-      createInvoice,
-      getInvoiceDetail,
-      getInvoices,
-    ];
+    this.tools = [getUserDetails];
 
     // Registramos las herramientas
     this.registerTools();
