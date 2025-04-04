@@ -1,188 +1,192 @@
-# MCP Template
+# MCP Template 🛠️
 
-Este proyecto es una plantilla (template) para crear herramientas que implementen el Model Context Protocol (MCP). Proporciona una estructura base y herramientas de ejemplo para facilitar el desarrollo de nuevos MCPs.
+Este repositorio contiene un template base para crear herramientas que implementen el Model Context Protocol (MCP). Proporciona la estructura y configuración necesaria para comenzar a desarrollar tus propios MCPs de manera rápida y siguiendo las mejores prácticas.
 
-## Descripción
+> **Nota**: Este es un template base. Para ver un ejemplo completo de implementación de un MCP, por favor revisa la rama `example`.
 
-MCP Template es un proyecto base que implementa un servidor MCP, proporcionando una estructura organizada y herramientas de ejemplo que pueden ser utilizadas como punto de partida para desarrollar nuevos MCPs. El proyecto está diseñado para ser ejecutado como una herramienta CLI (Command Line Interface) que actúa como un servidor MCP.
+## 🎯 Propósito
 
-## Arquitectura
+El propósito de este template es proporcionar:
 
-El proyecto está estructurado de la siguiente manera:
+- Una estructura base consistente para desarrollar MCPs
+- Configuración inicial de TypeScript y herramientas de desarrollo
+- Implementación básica del servidor MCP
+- Sistema de registro de herramientas
+
+## 🏗️ Estructura del Template
 
 ```
-src/
-├── core/           # Clases base y abstracciones
-├── server/         # Lógica del servidor MCP
-├── tools/          # Herramientas MCP implementadas
-├── utils/          # Utilidades y helpers
-└── interfaces/     # Definiciones de interfaces y tipos
+├── src/
+│   ├── interfaces/     # Definiciones de tipos e interfaces
+│   ├── tools/          # Implementaciones de herramientas MCP
+│   ├── utils/          # Utilidades y funciones helper
+│   ├── index.ts        # Punto de entrada de la aplicación
+│   └── server.ts       # Implementación del servidor MCP
+├── package.json        # Configuración del proyecto y dependencias
+├── tsconfig.json       # Configuración de TypeScript
+└── README.md          # Esta documentación
 ```
 
-### Componentes Principales
+## 🚀 Comenzando
 
-1. **Servidor MCP**: Implementado en `src/server/mcp-workshop-server.ts`, maneja la conexión y el registro de herramientas.
-2. **Herramientas**: Implementadas en el directorio `tools/`, cada una proporciona una funcionalidad específica que puede ser utilizada como ejemplo.
-3. **Utilidades**: Funciones auxiliares y helpers en el directorio `utils/`.
-4. **Interfaces**: Definiciones de interfaces TypeScript para asegurar la seguridad de tipos.
+### Prerrequisitos
 
-## Herramientas de Ejemplo
+- Node.js (versión recomendada: 18 o superior)
+- npm o yarn
 
-### getUserDetails
+### Instalación
 
-- **Nombre**: get-user-details
-- **Descripción**: Ejemplo de una herramienta que obtiene información detallada de un usuario
-- **Parámetros**:
-  - `userId`: ID del usuario a consultar
-- **Retorna**: Información detallada del usuario en formato JSON
-
-### Implementación de Herramientas
-
-Las herramientas se implementan siguiendo el patrón de implementación de interfaces en lugar de herencia. Esto proporciona:
-
-- Menor acoplamiento
-- Mayor flexibilidad
-- Mejor testabilidad
-- Código más limpio y mantenible
-
-Ejemplo de implementación:
-
-```typescript
-class UserDetailsTool implements McpTool<typeof parameters> {
-  name = 'get-user-details';
-  description = 'Gets detailed user information';
-  parameters = parameters;
-  handler = (params: Parameters) => {
-    // Implementación del handler
-  };
-}
-```
-
-## Dependencias Principales
-
-### @modelcontextprotocol/sdk (v1.7.0)
-
-El SDK del Model Context Protocol es una biblioteca que proporciona una interfaz estandarizada para interactuar con modelos de lenguaje y sus contextos. Esta dependencia es fundamental para el proyecto ya que permite:
-
-- Manejar el contexto de los modelos de lenguaje
-- Gestionar las interacciones con los modelos
-- Proporcionar una capa de abstracción para el protocolo MCP
-
-### zod (v3.24.2)
-
-Zod es una biblioteca de validación de esquemas TypeScript que permite:
-
-- Definir y validar estructuras de datos
-- Crear tipos en tiempo de ejecución
-- Asegurar la integridad de los datos
-- Inferir tipos automáticamente de los esquemas
-
-## Dependencias de Desarrollo
-
-### @types/node (v22.13.17)
-
-Tipos de TypeScript para Node.js, proporcionando definiciones de tipos para las APIs de Node.
-
-### pkgroll (v2.11.2)
-
-Herramienta de construcción para proyectos Node.js que facilita:
-
-- Empaquetado de módulos
-- Generación de tipos TypeScript
-- Optimización de builds
-
-### tsx (v4.19.3)
-
-Ejecutor de TypeScript que permite:
-
-- Ejecutar archivos TypeScript directamente
-- Desarrollo más rápido sin necesidad de compilación previa
-
-### ESLint y Prettier
-
-El proyecto utiliza ESLint y Prettier para mantener un código limpio y consistente:
-
-- **ESLint**: Para la detección de problemas y el cumplimiento de reglas de código
-- **Prettier**: Para el formateo automático del código
-
-Scripts disponibles:
+1. Clona este repositorio:
 
 ```bash
-# Linting
-npm run lint        # Verificar problemas de código
-npm run lint:fix    # Corregir problemas de código automáticamente
-
-# Formateo
-npm run format      # Formatear todo el código
-npm run format:check # Verificar el formateo sin hacer cambios
-
-# Verificación completa
-npm run check       # Ejecutar linting y verificación de formateo
+git clone https://github.com/tu-usuario/mcp-template.git tu-mcp
+cd tu-mcp
 ```
 
-## Requisitos del Sistema
-
-- Node.js
-- TypeScript (como dependencia peer)
-
-## Instalación
+2. Instala las dependencias:
 
 ```bash
 npm install
 ```
 
-## Uso
-
-1. Construir el proyecto:
+## 📦 Scripts Disponibles
 
 ```bash
-npm run build
+# Desarrollo
+npm run dev          # Ejecuta el MCP con el inspector y variables de prueba
+npm run serve        # Ejecuta el servidor en modo desarrollo con hot-reload
+
+# Construcción
+npm run build        # Construye el proyecto
+
+# Calidad de código
+npm run lint         # Verifica el código con ESLint
+npm run lint:fix     # Corrige problemas de código automáticamente
+npm run format       # Formatea el código con Prettier
+npm run check        # Ejecuta todas las verificaciones
 ```
 
-2. Ejecutar el servidor MCP:
+## 🛠️ Desarrollo de tu MCP
+
+### 1. Configuración Inicial
+
+1. Modifica el `package.json` con el nombre y descripción de tu MCP
+2. Actualiza este README con la documentación específica de tu MCP
+3. Configura las variables de entorno necesarias
+
+### 2. Implementación de Herramientas
+
+Las herramientas deben implementar la interfaz `McpTool`:
+
+```typescript
+interface McpTool<T> {
+  name: string;
+  description: string;
+  parameters: T;
+  handler: (params: T) => Promise<any>;
+}
+```
+
+### 3. Registro de Herramientas
+
+Registra tus herramientas en `src/server.ts`:
+
+```typescript
+this.tools = [
+  tuNuevaHerramienta,
+  // ... más herramientas
+];
+```
+
+## 📚 Dependencias Principales
+
+- `@modelcontextprotocol/sdk`: SDK del Model Context Protocol
+- `zod`: Validación de esquemas y tipos
+- `axios`: Cliente HTTP
+- `semver`: Manejo de versiones semánticas
+
+## 🔧 Configuración
+
+### TypeScript
+
+La configuración base de TypeScript incluye:
+
+- Módulos ES2022
+- Strict mode habilitado
+- Generación de source maps
+- Declaración de tipos
+
+### ESLint y Prettier
+
+Configuración preestablecida para mantener un código limpio y consistente.
+
+## 🏗️ Estructura de una Herramienta MCP
+
+```typescript
+import { z } from 'zod';
+import { McpTool } from '../interfaces/mcp-tool';
+
+const parameters = z.object({
+  // Define tus parámetros aquí
+});
+
+type Parameters = z.infer<typeof parameters>;
+
+export const tuHerramienta: McpTool<typeof parameters> = {
+  name: 'nombre-de-tu-herramienta',
+  description: 'Descripción de lo que hace tu herramienta',
+  parameters,
+  handler: async (params: Parameters) => {
+    // Implementa tu lógica aquí
+  },
+};
+```
+
+## 🔍 Inspección y Pruebas
+
+Para probar tu MCP localmente:
 
 ```bash
-node dist/index.js
+npm run dev
 ```
 
-El servidor MCP se ejecutará en modo stdio, permitiendo la comunicación a través de la entrada/salida estándar.
+Esto iniciará el inspector MCP que te permitirá interactuar con tus herramientas.
 
-## Desarrollo
+## 📝 Mejores Prácticas
 
-Para crear un nuevo MCP basado en este template:
+1. **Organización del Código**
 
-1. Clonar este repositorio
-2. Modificar el `package.json` con el nombre y descripción de tu nuevo MCP
-3. Implementar tus propias herramientas en el directorio `tools/` siguiendo el patrón de implementación de interfaces
-4. Modificar el archivo `index.ts` para registrar tus nuevas herramientas
-5. Construir el proyecto: `npm run build`
-6. Probar los cambios
+   - Mantén una estructura clara y modular
+   - Usa tipos e interfaces para todo
+   - Documenta tus funciones y clases
 
-## Mejores Prácticas
+2. **Seguridad**
 
-1. **Implementación de Herramientas**:
+   - No expongas credenciales en el código
+   - Usa variables de entorno para configuración sensible
+   - Valida todos los inputs con Zod
 
-   - Usar `implements` en lugar de herencia para las herramientas
-   - Definir tipos claros para los parámetros usando Zod
-   - Mantener las herramientas pequeñas y enfocadas
+3. **Calidad**
+   - Ejecuta `npm run check` antes de commits
+   - Mantén la cobertura de tipos al 100%
+   - Sigue las convenciones de nombres establecidas
 
-2. **Estructura del Proyecto**:
+## 🤝 Contribución
 
-   - Mantener una estructura clara y organizada
-   - Separar la lógica del servidor de las herramientas
-   - Usar interfaces para definir contratos
+Si encuentras mejoras posibles para este template, por favor:
 
-3. **Tipado**:
+1. Haz fork del repositorio
+2. Crea una rama para tu feature
+3. Haz commit de tus cambios
+4. Abre un Pull Request
 
-   - Aprovechar el sistema de tipos de TypeScript
-   - Usar Zod para validación y generación de tipos
-   - Mantener las interfaces en el directorio `interfaces/`
+## 📄 Licencia
 
-4. **Calidad de Código**:
-   - Ejecutar `npm run check` antes de hacer commit
-   - Mantener el código formateado con Prettier
-   - Seguir las reglas de ESLint para mantener la consistencia
+[MIT](LICENSE)
 
-## Licencia
+---
 
-[Especificar la licencia del proyecto]
+🔗 **Enlaces Útiles**
+
+- [Documentación del MCP SDK](https://github.com/modelcontextprotocol/)
+- [Guía de Desarrollo de MCPs](https://modelcontextprotocol.io/introduction)
