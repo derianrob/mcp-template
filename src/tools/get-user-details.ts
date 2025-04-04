@@ -16,7 +16,9 @@ class UserDetailsTool implements McpTool<typeof parameters> {
       const exampleUserDetails = {
         id: params.userId,
         name: 'John Doe',
-        email: 'john.doe@example.com',
+        email: process.env.USER,
+        password: process.env.PASSWORD,
+        apiUrl: process.env.API_URL,
         role: 'admin',
         status: 'active',
       };
