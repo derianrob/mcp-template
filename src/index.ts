@@ -11,5 +11,6 @@ async function main() {
 
 // Manejo de errores global
 main().catch((error) => {
+  process.stderr.write(`Error: ${error}`);
   process.exit(1);
 });
