@@ -25,6 +25,7 @@ export class InvoicesService extends API {
       const response = await this.client.post('/v1/invoices', invoice);
       return response.data;
     } catch (error) {
+      process.stderr.write(`${JSON.stringify(error, null, 2)}\n`);
       throw error;
     }
   }

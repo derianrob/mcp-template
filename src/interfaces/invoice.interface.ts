@@ -6,6 +6,7 @@ export interface IInvoiceBase {
   dueDate: Date;
   client: IContact;
   items: IItem[];
+  paymentMethod: 'cash' | 'credit-card' | 'debit-card';
 }
 
 export interface IInvoice extends IInvoiceBase {

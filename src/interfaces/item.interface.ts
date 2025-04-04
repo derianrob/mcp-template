@@ -7,3 +7,7 @@ export interface IItemBase {
 export interface IItem extends IItemBase {
   id: string;
 }
+
+export interface IItemPayload extends IItem {
+  quantity: number;
+}
