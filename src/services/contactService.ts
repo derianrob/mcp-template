@@ -1,5 +1,5 @@
 import API from '../utils/api';
-import type { Contact } from '../interfaces/contact.interface';
+import type { IContact } from '../interfaces/contact.interface';
 
 export class ContactsService extends API {
   async getContact(id: string) {
@@ -20,7 +20,7 @@ export class ContactsService extends API {
     }
   }
 
-  async createContact(contact: Contact) {
+  async createContact(contact: IContact) {
     try {
       const data = {
         ...contact,

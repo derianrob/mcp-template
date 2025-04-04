@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import type { McpTool } from '../interfaces/tool.interface';
-import { response, errorResponse } from '../utils/response';
-import { ContactsService } from '../services/contactService';
+import type { McpTool } from '../../interfaces/tool.interface';
+import { response, errorResponse } from '../../utils/response';
+import { ContactsService } from '../../services/contactService';
 
 const parameters = {} as const;
 

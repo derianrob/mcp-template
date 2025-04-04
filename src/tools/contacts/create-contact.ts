@@ -1,13 +1,13 @@
 import { z } from 'zod';
-import { response, errorResponse } from '../utils/response';
-import { ContactsService } from '../services/contactService';
+import { response, errorResponse } from '../../utils/response';
+import { ContactsService } from '../../services/contactService';
 
-import type { McpTool } from '../interfaces/tool.interface';
-import type { ContactAddress } from '../interfaces/contact.interface';
+import type { McpTool } from '../../interfaces/tool.interface';
+import type { IContactAddress } from '../../interfaces/contact.interface';
 
 const addressSchema = z.object({
   zipCode: z.string(),
-}) satisfies z.ZodType<ContactAddress>;
+}) satisfies z.ZodType<IContactAddress>;
 
 const parameters = {
   name: z.string().describe('Contact name'),

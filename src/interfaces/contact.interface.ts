@@ -1,9 +1,9 @@
-export interface ContactAddress {
+export interface IContactAddress {
   zipCode: string;
 }
 
-export interface Contact {
+export interface IContact {
   name: string;
   email: string;
-  address: ContactAddress;
+  address: IContactAddress;
 }
