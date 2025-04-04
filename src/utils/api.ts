@@ -5,14 +5,14 @@ class Api {
   protected client: AxiosInstance;
 
   constructor() {
-    const tokenAlegra = btoa(`${process.env.ALEGRA_EMAIL}:${process.env.ALEGRA_TOKEN}`);
+    const token = btoa(`${process.env.USER}:${process.env.PASSWORD}`);
 
     this.client = axios.create({
       baseURL: process.env.API_URL,
       headers: {
         'Content-Type': 'application/json',
         accept: 'application/json',
-        Authorization: `Basic ${tokenAlegra}`,
+        Authorization: `Basic ${token}`,
       },
     });
 
