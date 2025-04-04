@@ -1,8 +1,8 @@
 import API from '../utils/api';
-import type { IContact } from '../interfaces/contact.interface';
+import type { IContactBase, IContact } from '../interfaces/contact.interface';
 
 export class ContactsService extends API {
-  async getContact(id: string) {
+  async getContact(id: string): Promise<IContact> {
     try {
       const response = await this.client.get(`/v1/contacts/${id}`);
       return response.data;
@@ -11,7 +11,7 @@ export class ContactsService extends API {
     }
   }
 
-  async getContacts() {
+  async getContacts(): Promise<IContact[]> {
     try {
       const response = await this.client.get('/v1/contacts');
       return response.data;
@@ -20,7 +20,7 @@ export class ContactsService extends API {
     }
   }
 
-  async createContact(contact: IContact) {
+  async createContact(contact: IContactBase): Promise<IContact> {
     try {
       const data = {
         ...contact,
