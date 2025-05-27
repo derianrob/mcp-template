@@ -1,0 +1,34 @@
+{
+  "jsonrpc": "2.0",
+  "id": "8bb30384-c61d-4254-8969-6b2e585cc828",
+  "result": {
+    "role": "agent",
+    "messageId": "0e1bf1fa-1182-4d46-8b8a-d38e23b369f3",
+    "parts": [
+      {
+        "kind": "text",
+        "text": "Why did the JavaScript developer wear glasses? Because he could not C#!"
+      }
+    ],
+    "contextId": "84afa081-59c2-4a57-8087-1c0925568b27",
+    "taskId": "b81b2c1c-018c-4be6-8809-50e27b609a2d",
+    "id": "b81b2c1c-018c-4be6-8809-50e27b609a2d",
+    "status": {
+      "state": "completed",
+      "message": {
+        "role": "agent",
+        "messageId": "0e1bf1fa-1182-4d46-8b8a-d38e23b369f3",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Why did the JavaScript developer wear glasses? Because he could not C#!"
+          }
+        ],
+        "contextId": "84afa081-59c2-4a57-8087-1c0925568b27",
+        "taskId": "b81b2c1c-018c-4be6-8809-50e27b609a2d"
+      }
+    },
+    "message_id": "0e1bf1fa-1182-4d46-8b8a-d38e23b369f3",
+    "context_id": "84afa081-59c2-4a57-8087-1c0925568b27"
+  }
+}

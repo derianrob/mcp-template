@@ -1,0 +1,22 @@
+{
+  "agentUrl": "http://localhost:10002/",
+  "body": {
+    "id": "8bb30384-c61d-4254-8969-6b2e585cc828",
+    "jsonrpc": "2.0",
+    "method": "message/send",
+    "params": {
+      "message": {
+        "contextId": "84afa081-59c2-4a57-8087-1c0925568b27",
+        "kind": "message",
+        "messageId": "5936e811-3d54-4e13-81ff-0c39cb1101fc",
+        "parts": [
+          {
+            "type": "text",
+            "text": "Hello, this is a test message"
+          }
+        ],
+        "role": "user"
+      }
+    }
+  }
+}
