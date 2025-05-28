@@ -2,7 +2,7 @@ import { A2AClient, type AgentCard } from "a2a-sdk-google";
 import { z } from "zod";
 import type { McpTool } from "../interfaces/tool.interface";
 
-const urls = ["http://localhost:1201"];
+const urls = ["http://localhost:3006"];
 
 const parameters = {} as const;
 
